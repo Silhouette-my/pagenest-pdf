@@ -1,0 +1,305 @@
+/* Shared macOS-style tokens for the extension popup and settings page,
+   matching the reader's Liquid Glass chrome. */
+:root {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI",
+    sans-serif;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+
+  --window-bg: #eceef3;
+  /* Soft "wallpaper" so the translucent glass has something to show through:
+     Chrome draws extension pages in an opaque window. */
+  --window-tint:
+    radial-gradient(60% 50% at 8% 6%, rgb(120 176 255 / 0.55), transparent 70%),
+    radial-gradient(55% 45% at 96% 18%, rgb(196 160 255 / 0.5), transparent 70%),
+    radial-gradient(60% 55% at 70% 100%, rgb(126 224 204 / 0.45), transparent 70%),
+    radial-gradient(45% 40% at 0% 90%, rgb(255 190 150 / 0.4), transparent 70%);
+  --label: rgb(0 0 0 / 0.85);
+  --label-secondary: rgb(60 60 67 / 0.66);
+  --label-tertiary: rgb(60 60 67 / 0.4);
+  --separator: rgb(0 0 0 / 0.08);
+  --group-bg: rgb(255 255 255 / 0.42);
+  --glass-blur: blur(26px) saturate(1.9);
+  /* Same top-left specular rim as the reader's toolbar capsules. */
+  --glass-rim:
+    inset 1.5px 1.5px 1px -1px rgb(255 255 255 / 0.95),
+    inset 4px 4px 7px -5px rgb(255 255 255 / 0.6),
+    inset -1px -1px 1px -0.5px rgb(255 255 255 / 0.5);
+  --group-shadow:
+    var(--glass-rim),
+    0 0 0 0.5px rgb(0 0 0 / 0.06),
+    0 4px 14px rgb(0 0 0 / 0.07);
+  --control-bg: rgb(255 255 255 / 0.45);
+  --control-hover: rgb(255 255 255 / 0.65);
+  --field-bg: rgb(255 255 255 / 0.6);
+  --field-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.14), 0 1px 1px rgb(0 0 0 / 0.05);
+  --switch-off: rgb(0 0 0 / 0.1);
+  --accent: #007aff;
+  --accent-strong: #0066d6;
+  --success: #34c759;
+  --warning: #ff9f0a;
+  --focus-ring: 0 0 0 3.5px rgb(0 122 255 / 0.42);
+
+  color: var(--label);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --window-bg: #19191c;
+    --window-tint:
+      radial-gradient(60% 50% at 8% 6%, rgb(40 100 220 / 0.45), transparent 70%),
+      radial-gradient(55% 45% at 96% 18%, rgb(130 70 220 / 0.38), transparent 70%),
+      radial-gradient(60% 55% at 70% 100%, rgb(20 150 130 / 0.35), transparent 70%),
+      radial-gradient(45% 40% at 0% 90%, rgb(200 100 60 / 0.28), transparent 70%);
+    --label: rgb(255 255 255 / 0.9);
+    --label-secondary: rgb(235 235 245 / 0.62);
+    --label-tertiary: rgb(235 235 245 / 0.34);
+    --separator: rgb(255 255 255 / 0.09);
+    --group-bg: rgb(36 36 42 / 0.45);
+    --glass-rim:
+      inset 1.5px 1.5px 1px -1px rgb(255 255 255 / 0.35),
+      inset 4px 4px 7px -5px rgb(255 255 255 / 0.18),
+      inset -1px -1px 1px -0.5px rgb(255 255 255 / 0.12);
+    --group-shadow:
+      var(--glass-rim),
+      0 0 0 0.5px rgb(0 0 0 / 0.5),
+      0 4px 14px rgb(0 0 0 / 0.25);
+    --control-bg: rgb(255 255 255 / 0.1);
+    --control-hover: rgb(255 255 255 / 0.16);
+    --field-bg: rgb(0 0 0 / 0.2);
+    --field-shadow: 0 0 0 0.5px rgb(255 255 255 / 0.14);
+    --switch-off: rgb(255 255 255 / 0.16);
+    --accent: #0a84ff;
+    --accent-strong: #409cff;
+    --success: #30d158;
+    --warning: #ffd60a;
+    --focus-ring: 0 0 0 3.5px rgb(10 132 255 / 0.5);
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--window-bg);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--window-tint), var(--window-bg);
+  background-attachment: fixed;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --window-tint: linear-gradient(transparent, transparent);
+    --group-bg: Canvas;
+    --glass-blur: none;
+  }
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* App glyph: a document with a folded corner and the PDF band. */
+.app-icon {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 42px;
+  border-radius: 5px;
+  background: linear-gradient(225deg, transparent 0 9px, #ffffff 9px);
+  filter: drop-shadow(0 0 0.5px rgb(0 0 0 / 0.35)) drop-shadow(0 3px 6px rgb(0 0 0 / 0.14));
+}
+
+.app-icon::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 13px;
+  height: 13px;
+  border-bottom-left-radius: 3px;
+  background: linear-gradient(225deg, transparent 50%, #dcdce2 50%);
+  content: "";
+}
+
+.app-icon::after {
+  position: absolute;
+  right: 0;
+  bottom: 9px;
+  left: 0;
+  display: grid;
+  height: 11px;
+  place-items: center;
+  color: #ffffff;
+  background: #ff3b30;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  content: "PDF";
+}
+
+/* Inset grouped list, as in System Settings */
+.group {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--group-bg);
+  box-shadow: var(--group-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.row {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 8px 14px;
+}
+
+.row + .row {
+  box-shadow: inset 0 0.5px 0 var(--separator);
+}
+
+.row-label {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.row-title {
+  font-weight: 500;
+}
+
+.row-detail {
+  color: var(--label-secondary);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.row-value {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--label-secondary);
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* macOS switch */
+.switch {
+  position: relative;
+  flex: none;
+  width: 38px;
+  height: 22px;
+  margin: 0;
+  border-radius: 999px;
+  appearance: none;
+  background: var(--switch-off);
+  cursor: default;
+  transition: background-color 200ms ease;
+}
+
+.switch::after {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 0.5px rgb(0 0 0 / 0.08),
+    0 2px 4px rgb(0 0 0 / 0.2);
+  transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1);
+  content: "";
+}
+
+.switch:checked {
+  background: var(--accent);
+}
+
+.switch:checked::after {
+  transform: translateX(16px);
+}
+
+/* Capsule buttons */
+.button {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 16px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--label);
+  background: var(--control-bg);
+  box-shadow: var(--glass-rim), 0 0 0 0.5px rgb(0 0 0 / 0.06), 0 2px 6px rgb(0 0 0 / 0.06);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  font-weight: 500;
+  transition:
+    background-color 140ms ease,
+    transform 220ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.button:hover {
+  background: var(--control-hover);
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button.primary {
+  color: #ffffff;
+  background: var(--accent);
+  box-shadow: inset 0 0.5px 0 rgb(255 255 255 / 0.3), 0 1px 3px rgb(0 0 0 / 0.14);
+}
+
+.button.primary:hover {
+  background: var(--accent-strong);
+}
+
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-inline-end: 6px;
+  border-radius: 50%;
+  background: var(--label-tertiary);
+  vertical-align: 1px;
+}
+
+.status-dot[data-state="on"] {
+  background: var(--success);
+}
+
+.status-dot[data-state="warn"] {
+  background: var(--warning);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}

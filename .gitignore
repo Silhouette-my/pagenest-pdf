@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.DS_Store
+
+# Local tooling, diagnostic output and packaged builds
+.claude/
+*.log
+*.zip
+.env
+.env.*
+!.env.example

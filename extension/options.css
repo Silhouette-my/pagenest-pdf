@@ -1,0 +1,78 @@
+main {
+  width: min(640px, calc(100% - 40px));
+  margin: 48px auto 64px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.app-icon.large {
+  width: 52px;
+  height: 64px;
+  transform-origin: center;
+}
+
+.app-icon.large::after {
+  bottom: 14px;
+  height: 16px;
+  font-size: 10px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.page-header p {
+  max-width: 480px;
+  margin: 0;
+  color: var(--label-secondary);
+  line-height: 1.45;
+}
+
+h2 {
+  margin: 26px 0 8px 14px;
+  color: var(--label-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+form h2:first-child {
+  margin-top: 0;
+}
+
+.field-row input[type="url"] {
+  width: min(300px, 55%);
+  min-height: 28px;
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--field-bg);
+  box-shadow: var(--field-shadow);
+}
+
+.field-row input[type="url"]:focus-visible {
+  box-shadow: var(--field-shadow), var(--focus-ring);
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+output {
+  color: var(--label-secondary);
+}
+
+output[data-state="error"] {
+  color: #ff3b30;
+}

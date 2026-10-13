@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="optionsTitle">Gemini PDF Reader Companion Settings</title>
+    <link rel="stylesheet" href="ui.css" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <header class="page-header">
+        <div class="app-icon large" aria-hidden="true"></div>
+        <div>
+          <h1 data-i18n="extName">Gemini PDF Reader Companion</h1>
+          <p data-i18n="optionsIntro">
+            The extension only handles PDF detection and local byte transfer.
+            The reader itself remains a normal HTTP(S) page.
+          </p>
+        </div>
+      </header>
+
+      <form id="settings-form">
+        <h2 data-i18n="sectionReader">Reader</h2>
+        <div class="group">
+          <label class="row field-row">
+            <span class="row-label">
+              <span class="row-title" data-i18n="readerUrl">Reader URL</span>
+              <span class="row-detail" data-i18n="readerUrlDetail">The HTTP(S) page that renders your PDFs.</span>
+            </span>
+            <input
+              id="reader-url"
+              type="url"
+              placeholder="https://reader.example.com/"
+              required
+              spellcheck="false"
+            />
+          </label>
+        </div>
+
+        <h2 data-i18n="sectionAutomation">Automatic Opening</h2>
+        <div class="group">
+          <label class="row">
+            <span class="row-label">
+              <span class="row-title" data-i18n="autoLocalLong">Automatically open local PDFs</span>
+              <span class="row-detail" data-i18n="autoLocalLongDetail">Takes over PDFs opened from Finder or file:// URLs.</span>
+            </span>
+            <input class="switch" id="enabled" type="checkbox" role="switch" />
+          </label>
+          <label class="row">
+            <span class="row-label">
+              <span class="row-title" data-i18n="autoWebLong">Automatically take over web PDFs</span>
+              <span class="row-detail" data-i18n="autoWebLongDetail">Optional. Opens PDF links on websites in the reader.</span>
+            </span>
+            <input class="switch" id="auto-web-pdf" type="checkbox" role="switch" />
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <output id="save-status" aria-live="polite"></output>
+          <button class="button primary" type="submit" data-i18n="save">Save Settings</button>
+        </div>
+      </form>
+
+      <section>
+        <h2 data-i18n="sectionLocal">Local PDFs</h2>
+        <div class="group">
+          <div class="row">
+            <span class="row-label">
+              <span class="row-title"><span class="status-dot" id="file-access-dot"></span><span id="file-access"></span></span>
+              <span class="row-detail" data-i18n="fileAccessHelp">
+                Chrome controls local-file access separately. Open chrome://extensions,
+                choose this extension’s Details, then turn on “Allow access to file URLs”.
+              </span>
+            </span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

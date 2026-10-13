@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-21",
+  "recordType": "Transcribed from successful DevSpace test output; not automatically refreshed by future test runs",
+  "command": "npm run test:acceptance",
+  "automatedEngineeringAcceptance": "passed",
+  "consecutiveSuccessfulRuns": 2,
+  "fullHumanProductAcceptance": "not-signed-off",
+  "runtimeSourceChangedBetweenRuns": false,
+  "changesAfterSecondRun": "Acceptance documentation and evidence only",
+  "browser": "Chrome/153.0.8010.48",
+  "environment": {
+    "browserProfile": "disposable, not the user's normal profile",
+    "headless": true,
+    "https": "ephemeral loopback server with a self-signed certificate accepted only by the test browser",
+    "deviceScaleFactor": 2,
+    "deviceScaleFactorIsEmulated": true,
+    "performanceFixturePages": 500
+  },
+  "build": {
+    "typecheck": "passed-in-both-runs",
+    "productionBuild": "passed-in-both-runs",
+    "assets": [
+      {"path": "dist/index.html", "reportedKB": 17.41},
+      {"path": "dist/assets/index-cLaSg9VH.js", "reportedKB": 521.56, "reportedGzipKB": 155.60},
+      {"path": "dist/assets/index-BiEEVi8m.css", "reportedKB": 20.86, "reportedGzipKB": 5.04},
+      {"path": "dist/assets/pdf.worker-TGcf_-kp.mjs", "reportedKB": 2228.49}
+    ],
+    "warning": "JavaScript chunk exceeds Vite's 500 kB warning threshold; warning not suppressed",
+    "wholeTreeChecksum": "not-computed",
+    "productionDeploymentPerformed": false
+  },
+  "runs": [
+    {
+      "run": 1,
+      "status": "passed",
+      "performanceOrigin": "https://127.0.0.1:51655",
+      "startup": {"page": 250, "startupMs": 364.80000001192093, "renders": [{"page": 250, "scale": 1.25}]},
+      "scroll": {"frames": 30, "geometryReads": 240, "elapsedMs": 742},
+      "theme": {"textRequests": 0, "nodePreserved": true, "selectionPreserved": true, "elapsedMs": 89, "renderer": "perceptual-canvas", "text": true},
+      "search": {"coldMs": 129.0999999642372, "warmMs": 0.699999988079071, "firstResultMs": 1.199999988079071, "coldMatches": 6000, "warmMatches": 6000},
+      "memory": {"bitmaps": 8, "previews": 0, "estimatedBitmapMiB": 92.449951171875, "textPages": 16, "errors": []},
+      "transfers": [
+        {"mode": "range", "requestCount": 36, "rangeRequests": 36, "bytesServedIncludingNativeViewer": 19010590},
+        {"mode": "progressive", "requestCount": 2, "rangeRequests": 0, "bytesServedIncludingNativeViewer": 4988},
+        {"mode": "buffered", "requestCount": 2, "rangeRequests": 0, "bytesServedIncludingNativeViewer": 4988}
+      ],
+      "performanceRuntimeErrors": [],
+      "productionRuntimeErrors": []
+    },
+    {
+      "run": 2,
+      "status": "passed",
+      "performanceOrigin": "https://127.0.0.1:51925",
+      "startup": {"page": 250, "startupMs": 291.10000002384186, "renders": [{"page": 250, "scale": 1.25}]},
+      "scroll": {"frames": 30, "geometryReads": 240, "elapsedMs": 1107.5},
+      "theme": {"textRequests": 0, "nodePreserved": true, "selectionPreserved": true, "elapsedMs": 71.5, "renderer": "perceptual-canvas", "text": true},
+      "search": {"coldMs": 122.10000002384186, "warmMs": 0.5, "firstResultMs": 1.399999976158142, "coldMatches": 6000, "warmMatches": 6000},
+      "memory": {"bitmaps": 8, "previews": 0, "estimatedBitmapMiB": 92.449951171875, "textPages": 16, "errors": []},
+      "transfers": [
+        {"mode": "range", "requestCount": 44, "rangeRequests": 44, "bytesServedIncludingNativeViewer": 19534878},
+        {"mode": "progressive", "requestCount": 2, "rangeRequests": 0, "bytesServedIncludingNativeViewer": 4988},
+        {"mode": "buffered", "requestCount": 2, "rangeRequests": 0, "bytesServedIncludingNativeViewer": 4988}
+      ],
+      "performanceRuntimeErrors": [],
+      "productionRuntimeErrors": []
+    }
+  ],
+  "checksPassedInBothRuns": {
+    "native": {
+      "prevented": {"mousedown": false, "pointerdown": false, "contextmenu": false},
+      "hitText": true,
+      "selectable": "text",
+      "protocol": "https:",
+      "topLevel": true,
+      "productionMouseDragSelected": "PDF-GEMINI",
+      "productionThemeSelectionPreserved": true,
+      "productionThemeNodeConnected": true,
+      "linkPresent": true,
+      "formValue": "Persisted form",
+      "formFocused": true
+    },
+    "dark": {"renderer": "perceptual-canvas", "backgroundAfterAppearanceAdjustment": [36, 37, 40], "bitmap": [255, 0, 0], "outputScale": 2},
+    "fallback": {"renderer": "pdfjs-page-colors", "text": true},
+    "compatibility": {
+      "odd": [3, 4],
+      "even": [2, 3],
+      "themes": [
+        {"name": "original", "nodePreserved": true, "background": [255, 255, 255]},
+        {"name": "sepia", "nodePreserved": true, "background": [249, 241, 221]},
+        {"name": "dark", "nodePreserved": true, "background": [36, 37, 40]}
+      ],
+      "rotated": {"rotation": "90", "rebuilt": true, "hitText": true},
+      "selectionPinned": true,
+      "selectionDetails": {"nodeConnected": true, "expected": "P", "actual": "P", "collapsed": false},
+      "modes": [
+        {"mode": "vertical", "current": 20, "currentMarkers": 1},
+        {"mode": "horizontal", "current": 20, "currentMarkers": 1},
+        {"mode": "wrapped", "current": 20, "currentMarkers": 1},
+        {"mode": "page", "current": 20, "currentMarkers": 1}
+      ],
+      "queue": {"order": ["block", "high", "normal"], "cancellation": "AbortError"},
+      "errors": []
+    },
+    "productionRestoration": {"page": "7", "zoom": "1.5", "theme": "dark", "first": {"page": "7", "scale": "1.5"}, "text": true, "https": true, "topLevel": true},
+    "bridgeModes": [
+      {"mode": "range", "protocol": "https:", "topLevel": true, "pages": "1", "text": true, "transferTypes": ["pdf-range-start", "pdf-range-data"]},
+      {"mode": "progressive", "protocol": "https:", "topLevel": true, "pages": "1", "text": true, "transferTypes": ["pdf-progressive-start", "pdf-progressive-chunk", "pdf-progressive-end"]},
+      {"mode": "buffered", "protocol": "https:", "topLevel": true, "pages": "1", "text": true, "transferTypes": ["pdf-start", "pdf-chunk", "pdf-end"]}
+    ],
+    "localFile": {"status": "passed", "fileAccessInDisposableProfile": true, "protocol": "https:", "topLevel": true, "text": true}
+  },
+  "priorRecordedBaseline": {
+    "source": "Pre-optimization capture from the previous analysis/optimization session; not rerun against current source",
+    "geometryReadsOver30Frames": 15030,
+    "bitmaps": 22,
+    "previews": 14,
+    "estimatedBitmapMiB": 259.962158203125
+  },
+  "limitations": [
+    "Individual timings are not p50/p95 or a general performance guarantee.",
+    "Bitmap estimates cover end-of-scenario main page canvases, not peak or total process/GPU memory.",
+    "Transfer counts include native viewer traffic before takeover and PDF.js prefetch; they are not reader-only first-paint byte counts.",
+    "Tests do not assert that Gemini can access never-rendered distant pages or image-only PDFs.",
+    "Actual Gemini answers, physical Force Click/native translation, and public deployment certificate validation were not performed."
+  ],
+  "manualAcceptance": {
+    "geminiInChromeActualAnswer": "not-run",
+    "physicalMacosForceClickTranslation": "not-run",
+    "publicHttpsDeployment": "not-run"
+  }
+}

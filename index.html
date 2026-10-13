@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en" data-ui-theme="system">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="PageNest PDF: local PDF reading, annotations and session recovery. Compatible with Gemini in Chrome."
+    />
+    <title>PageNest PDF</title>
+    <script>
+      if (new URL(location.href).searchParams.has("extensionTransfer")) {
+        document.documentElement.classList.add("extension-handoff");
+      }
+    </script>
+    <style>
+      html.extension-handoff,
+      html.extension-handoff body {
+        background: var(--viewer-bg, #e8e8ed);
+      }
+
+      html.extension-handoff #empty-state {
+        display: none !important;
+      }
+
+      html.extension-handoff #loading-shell[hidden] {
+        display: grid !important;
+      }
+    </style>
+  </head>
+  <body>
+    <svg class="icon-sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-sidebar" viewBox="0 0 20 20"><rect x="2.75" y="3.75" width="14.5" height="12.5" rx="3"/><path d="M7.75 3.75v12.5M4.9 6.9h.9M4.9 9.2h.9"/></symbol>
+      <symbol id="i-search" viewBox="0 0 20 20"><circle cx="8.6" cy="8.6" r="5.1"/><path d="m12.4 12.4 4.35 4.35"/></symbol>
+      <symbol id="i-highlighter" viewBox="0 0 20 20"><path d="m12.4 3.3 4.3 4.3-7.3 7.3H5.1v-4.3z"/><path d="m10.1 5.6 4.3 4.3M3.25 17.25h6"/></symbol>
+      <symbol id="i-chevron-up" viewBox="0 0 20 20"><path d="m5.25 12.4 4.75-4.8 4.75 4.8"/></symbol>
+      <symbol id="i-chevron-down" viewBox="0 0 20 20"><path d="m5.25 7.6 4.75 4.8 4.75-4.8"/></symbol>
+      <symbol id="i-minus" viewBox="0 0 20 20"><path d="M5 10h10"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 20 20"><path d="M10 5v10M5 10h10"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.1"/><path d="M10 5.9V10l2.9 1.8"/></symbol>
+      <symbol id="i-exit" viewBox="0 0 20 20"><path d="M7.6 4.6 4 8.2l3.6 3.6"/><path d="M4.4 8.2h7.4a4.2 4.2 0 0 1 0 8.4H9.4"/></symbol>
+      <symbol id="i-printer" viewBox="0 0 20 20"><path d="M6 14.6H4.6A1.6 1.6 0 0 1 3 13V9.1a1.6 1.6 0 0 1 1.6-1.6h10.8A1.6 1.6 0 0 1 17 9.1V13a1.6 1.6 0 0 1-1.6 1.6H14"/><path d="M6 7.5V3.4h8v4.1"/><rect x="6" y="11.4" width="8" height="5.2" rx=".9"/></symbol>
+      <symbol id="i-download" viewBox="0 0 20 20"><path d="M10 3v9.1M6.4 8.6l3.6 3.6 3.6-3.6"/><path d="M3.9 12.6v1.9a2.6 2.6 0 0 0 2.6 2.6h7a2.6 2.6 0 0 0 2.6-2.6v-1.9"/></symbol>
+      <symbol id="i-ellipsis" viewBox="0 0 20 20"><path d="M4.9 10h.01M10 10h.01M15.1 10h.01" class="icon-dots"/></symbol>
+      <symbol id="i-thumbnails" viewBox="0 0 20 20"><rect x="5" y="2.75" width="10" height="6.1" rx="1.6"/><rect x="5" y="11.15" width="10" height="6.1" rx="1.6"/></symbol>
+      <symbol id="i-outline" viewBox="0 0 20 20"><path d="M8 5h9M10.5 10H17M10.5 15H17"/><path d="M4 5h.01M6.6 10h.01M6.6 15h.01" class="icon-dots"/></symbol>
+      <symbol id="i-paperclip" viewBox="0 0 20 20"><path d="m15.6 9.4-5.7 5.7a3.6 3.6 0 0 1-5.1-5.1l6.2-6.2a2.4 2.4 0 0 1 3.4 3.4l-6.1 6.1a1.2 1.2 0 0 1-1.7-1.7l5.6-5.6"/></symbol>
+      <symbol id="i-layers" viewBox="0 0 20 20"><path d="M10 3.1 17 6.9l-7 3.8-7-3.8z"/><path d="m3 10.3 7 3.8 7-3.8M3 13.6l7 3.8 7-3.8"/></symbol>
+      <symbol id="i-xmark" viewBox="0 0 20 20"><path d="m6 6 8 8M14 6l-8 8"/></symbol>
+      <symbol id="i-back" viewBox="0 0 20 20"><path d="m12.4 4.75-5 5.25 5 5.25"/></symbol>
+      <symbol id="i-forward" viewBox="0 0 20 20"><path d="m7.6 4.75 5 5.25-5 5.25"/></symbol>
+      <symbol id="i-bookmark" viewBox="0 0 20 20"><path d="M6 3.25h8a.75.75 0 0 1 .75.75v12.75L10 13.4l-4.75 3.35V4A.75.75 0 0 1 6 3.25z"/></symbol>
+      <symbol id="i-bookmark-fill" viewBox="0 0 20 20"><path class="icon-fill" d="M6 3.25h8a.75.75 0 0 1 .75.75v12.75L10 13.4l-4.75 3.35V4A.75.75 0 0 1 6 3.25z"/></symbol>
+      <symbol id="i-bookmark-add" viewBox="0 0 20 20"><path d="M11 3.25H5.75a.75.75 0 0 0-.75.75v12.75l4.5-3.35 4.5 3.35V10.5"/><path d="M15.25 2.5v5.5M12.5 5.25H18"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 20 20"><rect x="7" y="6.75" width="9.75" height="10.5" rx="2"/><path d="M13.25 6.75V4.75a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></symbol>
+      <symbol id="i-note" viewBox="0 0 20 20"><path d="M4.75 3.25h10.5a1.5 1.5 0 0 1 1.5 1.5v7.25l-4.75 4.75h-7.25a1.5 1.5 0 0 1-1.5-1.5v-10.5a1.5 1.5 0 0 1 1.5-1.5z"/><path d="M12 16.75v-3.25a1.5 1.5 0 0 1 1.5-1.5h3.25M6.5 7.25h7M6.5 10.25h4"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 20 20"><path d="M3.75 5.5h12.5M8 5.5V3.75h4V5.5M5.5 5.5l.75 10.25a1.5 1.5 0 0 0 1.5 1.4h4.5a1.5 1.5 0 0 0 1.5-1.4l.75-10.25M8.5 8.75v5M11.5 8.75v5"/></symbol>
+    </svg>
+
+    <div class="reader-app" id="reader-app">
+      <header class="toolbar" id="toolbar">
+        <div class="toolbar-group toolbar-left">
+          <div class="glass-group">
+            <button
+              class="toolbar-button requires-document"
+              id="sidebar-toggle"
+              type="button"
+              title="Toggle Sidebar"
+              aria-label="Toggle sidebar"
+              aria-expanded="false"
+              disabled
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-sidebar" /></svg>
+            </button>
+          </div>
+
+          <div class="glass-group history-group">
+            <button
+              class="toolbar-button"
+              id="navigate-back"
+              type="button"
+              title="Back (⌘[)"
+              aria-label="Back"
+              disabled
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-back" /></svg>
+            </button>
+
+            <button
+              class="toolbar-button"
+              id="navigate-forward"
+              type="button"
+              title="Forward (⌘])"
+              aria-label="Forward"
+              disabled
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-forward" /></svg>
+            </button>
+          </div>
+
+          <div class="glass-group">
+            <button
+              class="toolbar-button requires-document"
+              id="find-toggle"
+              type="button"
+              title="Find in Document"
+              aria-label="Find in document"
+              aria-expanded="false"
+              disabled
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-search" /></svg>
+            </button>
+
+            <button
+              class="toolbar-button requires-document"
+              id="highlight-selection"
+              type="button"
+              title="Highlight Selection"
+              aria-label="Highlight selected text"
+              disabled
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-highlighter" /></svg>
+            </button>
+
+            <button
+              class="toolbar-button requires-document"
+              id="bookmark-toggle"
+              type="button"
+              title="Bookmark This Page (⌘D)"
+              aria-label="Bookmark this page"
+              aria-pressed="false"
+              disabled
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-bookmark" /></svg>
+            </button>
+          </div>
+
+        </div>
+
+        <div class="toolbar-group toolbar-center">
+          <div class="glass-group page-group">
+            <input
+              class="toolbar-field page-number requires-document"
+              id="page-number"
+              type="number"
+              min="1"
+              value="1"
+              aria-label="Page number"
+              disabled
+            />
+            <span class="page-total" aria-label="Total pages">
+              / <span id="total-pages">0</span>
+            </span>
+          </div>
+
+          <div class="glass-group zoom-group">
+            <button
+              class="toolbar-button requires-document"
+              id="zoom-out"
+              type="button"
+              title="Zoom Out"
+              aria-label="Zoom out"
+              disabled
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-minus" /></svg>
+            </button>
+
+            <select
+              class="toolbar-select zoom-select requires-document"
+              id="zoom-select"
+              aria-label="Zoom"
+              disabled
+            >
+              <option id="zoom-custom" value="custom" hidden>100%</option>
+              <option value="automatic">Automatic Zoom</option>
+              <option value="page-fit">Page Fit</option>
+              <option value="page-width">Page Width</option>
+              <option value="actual">Actual Size</option>
+              <option value="0.5">50%</option>
+              <option value="0.75">75%</option>
+              <option value="1">100%</option>
+              <option value="1.25">125%</option>
+              <option value="1.5">150%</option>
+              <option value="2">200%</option>
+              <option value="2.5">250%</option>
+              <option value="3">300%</option>
+              <option value="4">400%</option>
+            </select>
+
+            <button
+              class="toolbar-button requires-document"
+              id="zoom-in"
+              type="button"
+              title="Zoom In"
+              aria-label="Zoom in"
+              disabled
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-plus" /></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="toolbar-group toolbar-right">
+          <div class="glass-group recent-group">
+            <button class="toolbar-button" id="recent-documents" type="button" title="Recent Documents" aria-label="Recent Documents">
+              <svg class="icon" aria-hidden="true"><use href="#i-clock" /></svg>
+            </button>
+
+            <button
+              class="toolbar-button"
+              id="exit-reader"
+              type="button"
+              title="Exit Reader"
+              aria-label="Exit Reader"
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-exit" /></svg>
+            </button>
+          </div>
+
+          <div class="glass-group file-actions">
+            <button
+              class="toolbar-button requires-document"
+              id="print"
+              type="button"
+              title="Print"
+              aria-label="Print"
+              disabled
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-printer" /></svg>
+            </button>
+
+            <button
+              class="toolbar-button requires-document"
+              id="save"
+              type="button"
+              title="Save"
+              aria-label="Save PDF"
+              disabled
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-download" /></svg>
+            </button>
+          </div>
+
+          <div class="glass-group">
+            <button
+              class="toolbar-button"
+              id="secondary-toggle"
+              type="button"
+              title="More Tools"
+              aria-label="More tools"
+              aria-expanded="false"
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-ellipsis" /></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="findbar" id="findbar" hidden>
+        <svg class="icon find-icon" aria-hidden="true"><use href="#i-search" /></svg>
+        <input
+          class="find-input"
+          id="find-input"
+          type="search"
+          placeholder="Find in document…"
+          autocomplete="off"
+          aria-label="Find in document"
+        />
+        <span class="find-count" data-i18n-skip id="find-count" aria-live="polite"></span>
+        <button id="find-previous" type="button" title="Previous match" aria-label="Previous match"><svg class="icon" aria-hidden="true"><use href="#i-chevron-up" /></svg></button>
+        <button id="find-next" type="button" title="Next match" aria-label="Next match"><svg class="icon" aria-hidden="true"><use href="#i-chevron-down" /></svg></button>
+        <button id="find-close" type="button" title="Close search" aria-label="Close search"><svg class="icon" aria-hidden="true"><use href="#i-xmark" /></svg></button>
+      </div>
+
+      <div class="reader-body">
+        <aside class="sidebar" id="sidebar" hidden>
+          <div class="sidebar-toolbar" role="tablist" aria-label="Sidebar views">
+            <button
+              class="sidebar-tab active"
+              id="thumbnail-tab"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="thumbnail-panel"
+              title="Show Thumbnails"
+              aria-label="Thumbnails"
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-thumbnails" /></svg>
+            </button>
+            <button
+              class="sidebar-tab"
+              id="outline-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="outline-panel"
+              title="Show Document Outline"
+              aria-label="Outline"
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-outline" /></svg>
+            </button>
+            <button
+              class="sidebar-tab"
+              id="annotations-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="annotations-panel"
+              title="Show Highlights and Notes"
+              aria-label="Highlights"
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-highlighter" /></svg>
+            </button>
+            <button
+              class="sidebar-tab"
+              id="bookmarks-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="bookmarks-panel"
+              title="Show Bookmarks"
+              aria-label="Bookmarks"
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-bookmark" /></svg>
+            </button>
+            <button
+              class="sidebar-tab"
+              id="attachments-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="attachments-panel"
+              title="Show Attachments"
+              aria-label="Attachments"
+              hidden
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-paperclip" /></svg>
+            </button>
+            <button
+              class="sidebar-tab"
+              id="layers-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="layers-panel"
+              title="Show Layers"
+              aria-label="Layers"
+              hidden
+            >
+              <svg class="icon" aria-hidden="true"><use href="#i-layers" /></svg>
+            </button>
+          </div>
+
+          <div class="sidebar-panel" id="thumbnail-panel" role="tabpanel">
+            <div class="thumbnail-view" data-i18n-skip id="thumbnail-view"></div>
+          </div>
+
+          <div class="sidebar-panel" id="outline-panel" role="tabpanel" hidden>
+            <div class="outline-view" data-i18n-skip id="outline-view"></div>
+          </div>
+
+          <div class="sidebar-panel" id="annotations-panel" role="tabpanel" hidden>
+            <div class="annotations-view" data-i18n-skip id="annotations-view"></div>
+          </div>
+
+          <div class="sidebar-panel" id="bookmarks-panel" role="tabpanel" hidden>
+            <div class="bookmarks-view" data-i18n-skip id="bookmarks-view"></div>
+          </div>
+
+          <div class="sidebar-panel" id="attachments-panel" role="tabpanel" hidden>
+            <div class="attachments-view" data-i18n-skip id="attachments-view"></div>
+          </div>
+
+          <div class="sidebar-panel" id="layers-panel" role="tabpanel" hidden>
+            <div class="layers-view" data-i18n-skip id="layers-view"></div>
+          </div>
+        </aside>
+
+        <main
+          class="viewer-container"
+          id="viewer-container"
+          aria-label="PDF document"
+        >
+          <section
+            class="loading-shell"
+            id="loading-shell"
+            aria-live="polite"
+            aria-busy="true"
+            data-indeterminate="true"
+            hidden
+          >
+            <div class="loading-card">
+              <div class="loading-document" aria-hidden="true">PDF</div>
+              <div class="loading-copy">
+                <h1 id="loading-title">Opening PDF…</h1>
+                <p id="loading-detail">Preparing the reader</p>
+              </div>
+              <div
+                class="loading-track"
+                id="loading-track"
+                role="progressbar"
+                aria-label="PDF loading progress"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="loading-bar" id="loading-bar"></div>
+              </div>
+              <div class="loading-meta">
+                <span id="loading-stage">Starting…</span>
+                <span id="loading-percent"></span>
+              </div>
+            </div>
+          </section>
+
+          <section class="empty-state" id="empty-state">
+            <div class="empty-card">
+              <div class="empty-icon" aria-hidden="true">PDF</div>
+              <h1>Open a PDF</h1>
+              <p>
+                Choose a local PDF or drop one here. The file stays inside your
+                browser.
+              </p>
+              <button class="primary-button" id="open-file" type="button">
+                Open File
+              </button>
+              <button class="recent-empty-button" id="empty-recent" type="button">Recent Documents</button>
+              <a class="test-pdf-link" href="/gemini-text-layer-test.pdf" download>
+                Download Gemini test PDF
+              </a>
+            </div>
+          </section>
+
+          <div class="drop-overlay" id="drop-overlay" hidden>
+            <div>Drop PDF here</div>
+          </div>
+
+          <div class="pages" data-i18n-skip id="pages" hidden></div>
+        </main>
+      </div>
+
+      <div class="secondary-toolbar" id="secondary-toolbar" hidden>
+        <button id="secondary-recent" type="button"><span>Recent Documents…</span></button>
+        <button id="secondary-stats" type="button"><span>Reading Statistics…</span></button>
+        <button id="secondary-open" type="button">
+          <span>Open File</span><kbd>⌘O</kbd>
+        </button>
+        <button class="requires-document" id="secondary-save" type="button" disabled>
+          <span>Save</span><kbd>⌘S</kbd>
+        </button>
+        <button class="requires-document" id="secondary-print" type="button" disabled>
+          <span>Print</span><kbd>⌘P</kbd>
+        </button>
+        <button class="requires-document" id="presentation-mode" type="button" disabled>
+          <span>Presentation Mode</span>
+        </button>
+
+        <div class="secondary-separator"></div>
+
+        <button class="requires-document" id="first-page" type="button" disabled>
+          <span>Go to First Page</span>
+        </button>
+        <button class="requires-document" id="last-page" type="button" disabled>
+          <span>Go to Last Page</span>
+        </button>
+        <button id="secondary-back" type="button" disabled>
+          <span>Back</span><kbd>⌘[</kbd>
+        </button>
+        <button id="secondary-forward" type="button" disabled>
+          <span>Forward</span><kbd>⌘]</kbd>
+        </button>
+        <button class="requires-document" id="secondary-bookmark" type="button" disabled>
+          <span>Add Bookmark</span><kbd>⌘D</kbd>
+        </button>
+
+        <div class="secondary-separator"></div>
+
+        <button class="requires-document" id="rotate-ccw" type="button" disabled>
+          <span>Rotate Counterclockwise</span><kbd>⇧R</kbd>
+        </button>
+        <button class="requires-document" id="rotate-cw" type="button" disabled>
+          <span>Rotate Clockwise</span><kbd>R</kbd>
+        </button>
+
+        <div class="secondary-separator"></div>
+
+        <label class="secondary-select-row">
+          <span>Scrolling</span>
+          <select id="scroll-mode" class="requires-document" aria-label="Scrolling mode" disabled>
+            <option value="vertical">Vertical Scrolling</option>
+            <option value="horizontal">Horizontal Scrolling</option>
+            <option value="wrapped">Wrapped Scrolling</option>
+            <option value="page">Page Scrolling</option>
+          </select>
+        </label>
+
+        <label class="secondary-select-row">
+          <span>Spread</span>
+          <select id="spread-mode" class="requires-document" aria-label="Spread mode" disabled>
+            <option value="none">No Spreads</option>
+            <option value="odd">Odd Spreads</option>
+            <option value="even">Even Spreads</option>
+          </select>
+        </label>
+
+        <label class="zoom-sensitivity-row">
+          <span>Zoom Sensitivity</span>
+          <input
+            id="zoom-sensitivity"
+            type="range"
+            min="50"
+            max="200"
+            step="10"
+            value="100"
+            aria-label="Zoom sensitivity"
+          />
+          <output id="zoom-sensitivity-value">1.0×</output>
+        </label>
+
+        <div class="secondary-separator"></div>
+
+        <label class="secondary-select-row">
+          <span>PDF Theme</span>
+          <select id="page-theme" aria-label="PDF page theme">
+            <option value="original">Original</option>
+            <option value="dark">Dark</option>
+            <option value="sepia">Sepia</option>
+          </select>
+        </label>
+
+        <details class="appearance-settings" id="appearance-settings">
+          <summary>Reading Appearance</summary>
+          <div class="appearance-settings-body">
+            <label class="appearance-range-row">
+              <span>Brightness</span>
+              <input id="appearance-brightness" type="range" min="70" max="130" step="1" value="100" />
+              <output id="appearance-brightness-value">100%</output>
+            </label>
+            <label class="appearance-range-row">
+              <span>Contrast</span>
+              <input id="appearance-contrast" type="range" min="70" max="140" step="1" value="100" />
+              <output id="appearance-contrast-value">100%</output>
+            </label>
+            <label class="appearance-range-row">
+              <span>Temperature</span>
+              <input id="appearance-temperature" type="range" min="-100" max="100" step="1" value="0" />
+              <output id="appearance-temperature-value">0</output>
+            </label>
+            <label class="appearance-range-row">
+              <span>Saturation</span>
+              <input id="appearance-saturation" type="range" min="0" max="150" step="1" value="100" />
+              <output id="appearance-saturation-value">100%</output>
+            </label>
+            <label class="appearance-color-row">
+              <span>Background</span>
+              <input id="appearance-background" type="color" value="#202124" />
+            </label>
+            <label class="appearance-color-row">
+              <span>Text</span>
+              <input id="appearance-foreground" type="color" value="#e8eaed" />
+            </label>
+            <div class="appearance-actions">
+              <button id="appearance-use-preset" type="button">Use Theme Colors</button>
+              <button id="appearance-reset" type="button">Reset Adjustments</button>
+            </div>
+          </div>
+        </details>
+
+        <div class="secondary-separator"></div>
+
+        <label class="secondary-select-row">
+          <span>Highlight</span>
+          <select id="highlight-color" aria-label="Highlight color">
+            <option value="yellow">Yellow</option>
+            <option value="green">Green</option>
+            <option value="pink">Pink</option>
+            <option value="blue">Blue</option>
+          </select>
+        </label>
+        <button class="requires-document" id="clear-highlights" type="button" disabled>
+          <span>Clear Highlights</span>
+        </button>
+
+        <div class="secondary-separator"></div>
+
+        <label class="secondary-select-row">
+          <span>UI Theme</span>
+          <select id="ui-theme" aria-label="Application theme">
+            <option value="system">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+
+        <label class="secondary-select-row">
+          <span>Language</span>
+          <select id="language" aria-label="Interface language">
+            <option value="system">System</option>
+            <option value="en">English</option>
+            <option value="zh-CN">简体中文</option>
+          </select>
+        </label>
+
+        <label class="history-option"><input id="sidebar-auto-reveal" type="checkbox" checked /><span>Auto-show sidebar on hover (left edge or sidebar button)</span></label>
+        <label class="zoom-sensitivity-row">
+          <span>Trigger Width</span>
+          <input id="sidebar-reveal-width" type="range" min="8" max="240" step="8" value="80" aria-label="Sidebar trigger width" />
+          <output id="sidebar-reveal-width-value">80 px</output>
+        </label>
+
+        <details class="appearance-settings" id="glass-settings">
+          <summary>Liquid Glass</summary>
+          <div class="appearance-settings-body">
+            <label class="history-option"><input id="liquid-glass" type="checkbox" checked /><span>Liquid glass refraction</span></label>
+            <label class="appearance-range-row">
+              <span>Refraction</span>
+              <input id="glass-refraction" type="range" min="0" max="100" step="1" value="50" />
+              <output id="glass-refraction-value">50%</output>
+            </label>
+            <label class="appearance-range-row">
+              <span>Edge Highlight</span>
+              <input id="glass-rim" type="range" min="0" max="100" step="1" value="60" />
+              <output id="glass-rim-value">60%</output>
+            </label>
+            <label class="appearance-range-row">
+              <span>Frost</span>
+              <input id="glass-frost" type="range" min="0" max="100" step="1" value="50" />
+              <output id="glass-frost-value">50%</output>
+            </label>
+            <label class="appearance-range-row">
+              <span>Toolbar Blur</span>
+              <input id="toolbar-blur" type="range" min="0" max="20" step="1" value="5" />
+              <output id="toolbar-blur-value">5 px</output>
+            </label>
+            <div class="appearance-actions">
+              <button id="glass-reset" type="button">Reset to Defaults</button>
+            </div>
+          </div>
+        </details>
+
+        <div class="secondary-separator"></div>
+
+        <label class="history-option"><input id="restore-session" type="checkbox" checked /><span>Restore previous session</span></label>
+        <label class="history-option"><input id="cache-local-pdfs" type="checkbox" checked /><span>Keep offline PDF copies (OPFS)</span></label>
+        <p class="history-settings-note">Copies stay in this browser only. Turn off to remove cached copies; file handles and reading history remain.</p>
+        <button id="clear-pdf-cache" type="button"><span>Clear Offline PDF Cache</span></button>
+        <div class="secondary-separator"></div>
+
+        <button
+          class="requires-document"
+          id="document-properties-button"
+          type="button"
+          disabled
+        >
+          <span>Document Properties…</span>
+        </button>
+      </div>
+
+      <input
+        id="pdf-file-input"
+        type="file"
+        accept="application/pdf,.pdf"
+        hidden
+      />
+
+      <dialog class="properties-dialog recent-dialog" id="recent-dialog" aria-labelledby="recent-title">
+        <div class="recent-layout">
+          <header><h2 id="recent-title">Recent Documents</h2><button type="button" id="recent-close" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-xmark" /></svg></button></header>
+          <p class="recent-info">PDFs and reading positions are stored locally in this browser. Reopening an uncached file may require permission.</p>
+          <div class="recent-list" data-i18n-skip id="recent-list"></div>
+          <footer><button id="recent-stats" type="button">Reading Statistics</button><span class="footer-spacer"></span><button id="recent-clear-cache" type="button">Clear PDF Cache</button><button id="recent-open-file" type="button">Open File…</button><button class="primary-button" id="recent-done" type="button">Done</button></footer>
+        </div>
+      </dialog>
+
+      <dialog class="properties-dialog stats-dialog" id="stats-dialog" aria-labelledby="stats-title">
+        <div class="stats-layout">
+          <header>
+            <h2 id="stats-title">Reading Statistics</h2>
+            <button type="button" id="stats-close" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-xmark" /></svg></button>
+          </header>
+          <div class="stats-body" id="stats-body" data-i18n-skip></div>
+          <footer>
+            <button id="stats-clear" type="button">Clear Statistics</button>
+            <span class="footer-spacer"></span>
+            <button class="primary-button" id="stats-done" type="button">Done</button>
+          </footer>
+        </div>
+      </dialog>
+
+      <dialog class="properties-dialog" id="document-properties">
+        <form method="dialog">
+          <header>
+            <h2>Document Properties</h2>
+            <button value="cancel" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-xmark" /></svg></button>
+          </header>
+          <dl data-i18n-skip id="properties-list"></dl>
+          <footer>
+            <button class="primary-button" value="default">Close</button>
+          </footer>
+        </form>
+      </dialog>
+
+      <div class="status-toast" data-i18n-skip id="status" role="status" aria-live="polite"></div>
+
+      <p class="visually-hidden" id="text-layer-check" hidden>
+        Gemini test phrase detected in the PDF.js Text Layer DOM.
+      </p>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

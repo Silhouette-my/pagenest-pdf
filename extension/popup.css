@@ -1,0 +1,55 @@
+body {
+  width: 320px;
+}
+
+.popup {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 2px 2px 4px;
+}
+
+.popup-title {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.popup-title strong {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.popup-title > span {
+  color: var(--label-secondary);
+  font-size: 12px;
+}
+
+.row-value {
+  max-width: 190px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+}
+
+.hint {
+  min-height: 16px;
+  margin: 0;
+  padding: 0 4px;
+  color: var(--label-secondary);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.hint:empty {
+  display: none;
+}

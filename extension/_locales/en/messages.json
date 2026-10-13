@@ -1,0 +1,121 @@
+{
+  "extName": {
+    "message": "PageNest PDF Companion"
+  },
+  "extDescription": {
+    "message": "Automatically opens PDFs in the Gemini-compatible HTTPS PDF reader."
+  },
+  "actionTitle": {
+    "message": "PageNest PDF"
+  },
+  "popupTitle": {
+    "message": "PageNest PDF"
+  },
+  "statusChecking": {
+    "message": "Checking…"
+  },
+  "statusLocalOn": {
+    "message": "Local auto-open is on"
+  },
+  "statusLocalOff": {
+    "message": "Local auto-open is off"
+  },
+  "autoLocal": {
+    "message": "Auto-open local PDFs"
+  },
+  "autoLocalDetail": {
+    "message": "PDFs from Finder and file://"
+  },
+  "autoWeb": {
+    "message": "Auto-open web PDFs"
+  },
+  "autoWebDetail": {
+    "message": "PDF links on websites (optional)"
+  },
+  "reader": {
+    "message": "Reader"
+  },
+  "localFiles": {
+    "message": "Local files"
+  },
+  "fileAllowed": {
+    "message": "Allowed"
+  },
+  "fileNeedsPermission": {
+    "message": "Needs permission"
+  },
+  "openCurrent": {
+    "message": "Open Current PDF"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "opening": {
+    "message": "Opening…"
+  },
+  "openFailed": {
+    "message": "Could not open the current tab as a PDF."
+  },
+  "startupWarning": {
+    "message": "Extension startup warning: $WARNING$",
+    "placeholders": {
+      "warning": {
+        "content": "$1"
+      }
+    }
+  },
+  "fileAccessHint": {
+    "message": "For local PDFs, enable “Allow access to file URLs” in Chrome’s extension details."
+  },
+  "optionsTitle": {
+    "message": "PageNest PDF Companion Settings"
+  },
+  "optionsIntro": {
+    "message": "The extension only handles PDF detection and local byte transfer. The reader itself remains a normal HTTP(S) page."
+  },
+  "sectionReader": {
+    "message": "Reader"
+  },
+  "readerUrl": {
+    "message": "Reader URL"
+  },
+  "readerUrlDetail": {
+    "message": "The HTTP(S) page that renders your PDFs."
+  },
+  "sectionAutomation": {
+    "message": "Automatic Opening"
+  },
+  "autoLocalLong": {
+    "message": "Automatically open local PDFs"
+  },
+  "autoLocalLongDetail": {
+    "message": "Takes over PDFs opened from Finder or file:// URLs."
+  },
+  "autoWebLong": {
+    "message": "Automatically take over web PDFs"
+  },
+  "autoWebLongDetail": {
+    "message": "Optional. Opens PDF links on websites in the reader."
+  },
+  "save": {
+    "message": "Save Settings"
+  },
+  "saved": {
+    "message": "Saved."
+  },
+  "invalidUrl": {
+    "message": "Enter a valid HTTP(S) reader URL."
+  },
+  "sectionLocal": {
+    "message": "Local PDFs"
+  },
+  "fileAccessOn": {
+    "message": "Local file access is enabled."
+  },
+  "fileAccessOff": {
+    "message": "Local file access is currently disabled."
+  },
+  "fileAccessHelp": {
+    "message": "Chrome controls local-file access separately. Open chrome://extensions, choose this extension’s Details, then turn on “Allow access to file URLs”."
+  }
+}

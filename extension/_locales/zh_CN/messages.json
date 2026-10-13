@@ -1,0 +1,121 @@
+{
+  "extName": {
+    "message": "PageNest PDF助手"
+  },
+  "extDescription": {
+    "message": "自动在兼容 Gemini 的 HTTPS PDF 阅读器中打开 PDF。"
+  },
+  "actionTitle": {
+    "message": "PageNest PDF"
+  },
+  "popupTitle": {
+    "message": "PageNest PDF"
+  },
+  "statusChecking": {
+    "message": "正在检查…"
+  },
+  "statusLocalOn": {
+    "message": "本地自动打开已开启"
+  },
+  "statusLocalOff": {
+    "message": "本地自动打开已关闭"
+  },
+  "autoLocal": {
+    "message": "自动打开本地 PDF"
+  },
+  "autoLocalDetail": {
+    "message": "来自访达和 file:// 的 PDF"
+  },
+  "autoWeb": {
+    "message": "自动打开网页 PDF"
+  },
+  "autoWebDetail": {
+    "message": "网站上的 PDF 链接（可选）"
+  },
+  "reader": {
+    "message": "阅读器"
+  },
+  "localFiles": {
+    "message": "本地文件"
+  },
+  "fileAllowed": {
+    "message": "已允许"
+  },
+  "fileNeedsPermission": {
+    "message": "需要授权"
+  },
+  "openCurrent": {
+    "message": "打开当前 PDF"
+  },
+  "settings": {
+    "message": "设置"
+  },
+  "opening": {
+    "message": "正在打开…"
+  },
+  "openFailed": {
+    "message": "无法将当前标签页作为 PDF 打开。"
+  },
+  "startupWarning": {
+    "message": "扩展启动警告：$WARNING$",
+    "placeholders": {
+      "warning": {
+        "content": "$1"
+      }
+    }
+  },
+  "fileAccessHint": {
+    "message": "要打开本地 PDF，请在 Chrome 的扩展详情中开启“允许访问文件网址”。"
+  },
+  "optionsTitle": {
+    "message": "PageNest PDF助手设置"
+  },
+  "optionsIntro": {
+    "message": "扩展只负责检测 PDF 和在本地传输文件数据，阅读器本身仍是一个普通的 HTTP(S) 网页。"
+  },
+  "sectionReader": {
+    "message": "阅读器"
+  },
+  "readerUrl": {
+    "message": "阅读器网址"
+  },
+  "readerUrlDetail": {
+    "message": "用于渲染 PDF 的 HTTP(S) 页面。"
+  },
+  "sectionAutomation": {
+    "message": "自动打开"
+  },
+  "autoLocalLong": {
+    "message": "自动打开本地 PDF"
+  },
+  "autoLocalLongDetail": {
+    "message": "接管从访达或 file:// 网址打开的 PDF。"
+  },
+  "autoWebLong": {
+    "message": "自动接管网页 PDF"
+  },
+  "autoWebLongDetail": {
+    "message": "可选。在阅读器中打开网站上的 PDF 链接。"
+  },
+  "save": {
+    "message": "存储设置"
+  },
+  "saved": {
+    "message": "已存储。"
+  },
+  "invalidUrl": {
+    "message": "请输入有效的 HTTP(S) 阅读器网址。"
+  },
+  "sectionLocal": {
+    "message": "本地 PDF"
+  },
+  "fileAccessOn": {
+    "message": "已允许访问本地文件。"
+  },
+  "fileAccessOff": {
+    "message": "当前未允许访问本地文件。"
+  },
+  "fileAccessHelp": {
+    "message": "Chrome 会单独控制本地文件访问权限。请打开 chrome://extensions，进入此扩展的“详情”，然后开启“允许访问文件网址”。"
+  }
+}

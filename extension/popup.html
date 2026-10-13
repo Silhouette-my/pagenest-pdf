@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="popupTitle">Gemini PDF Reader</title>
+    <link rel="stylesheet" href="ui.css" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup">
+      <header class="popup-header">
+        <div class="app-icon" aria-hidden="true"></div>
+        <div class="popup-title">
+          <strong data-i18n="popupTitle">Gemini PDF Reader</strong>
+          <span><span class="status-dot" id="status-dot"></span><span id="status-label" data-i18n="statusChecking">Checking…</span></span>
+        </div>
+      </header>
+
+      <section class="group">
+        <label class="row">
+          <span class="row-label">
+            <span class="row-title" data-i18n="autoLocal">Auto-open local PDFs</span>
+            <span class="row-detail" data-i18n="autoLocalDetail">PDFs from Finder and file://</span>
+          </span>
+          <input class="switch" id="enabled" type="checkbox" role="switch" />
+        </label>
+        <label class="row">
+          <span class="row-label">
+            <span class="row-title" data-i18n="autoWeb">Auto-open web PDFs</span>
+            <span class="row-detail" data-i18n="autoWebDetail">PDF links on websites (optional)</span>
+          </span>
+          <input class="switch" id="auto-web-pdf" type="checkbox" role="switch" />
+        </label>
+      </section>
+
+      <section class="group">
+        <div class="row">
+          <span class="row-title" data-i18n="reader">Reader</span>
+          <span class="row-value" id="reader-url">—</span>
+        </div>
+        <div class="row">
+          <span class="row-title" data-i18n="localFiles">Local files</span>
+          <span class="row-value" id="file-access">—</span>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button class="button" id="settings" type="button" data-i18n="settings">Settings</button>
+        <button class="button primary" id="open-current" type="button" data-i18n="openCurrent">Open Current PDF</button>
+      </div>
+
+      <p class="hint" id="hint"></p>
+    </main>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
