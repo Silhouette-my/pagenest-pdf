@@ -1,24 +1,44 @@
 # PageNest PDF
 
-**Your PDFs, your place, your browser.**
+**PDF 留在本地，阅读接着上次。**
 
-PageNest PDF is a local-first browser PDF reader with highlights, notes, bookmarks and reading-session recovery. Its selectable PDF.js text layer runs in an ordinary web page, designed for use with Gemini in Chrome.
+[English](README.en.md) · [安装与部署](docs/install.md) · [版本下载](https://github.com/Silhouette-my/pagenest-pdf/releases/latest)
 
-## Features
+PageNest PDF 是一个在浏览器中运行的 PDF 阅读器，支持高亮、笔记、书签和阅读进度恢复。它把 PDF 渲染为普通网页中的可选择文本，方便配合 Gemini in Chrome 使用。
 
-- Read local PDFs with selectable text, search, outlines, thumbnails, links and forms.
-- Highlight in four colors, add notes and export annotations as Markdown.
-- Keep bookmarks, navigation history and local reading statistics.
-- Resume documents and reading positions using IndexedDB, reusable file handles and optional OPFS copies.
-- Choose light/dark interface themes, original/dark/sepia pages and adjustable reading appearance.
-- Use the optional Chrome companion to open local or web PDFs in the reader.
-- Switch between English and Simplified Chinese.
+## 能做什么
 
-PDF processing stays in the browser. There is no PDF upload backend, account, cloud sync, analytics or AI API. Gemini is a separate browser feature: sharing a tab with Gemini is controlled by the user and subject to that service's behavior and terms. PageNest PDF is an independent project, not affiliated with Google or Mozilla.
+- 阅读本地 PDF：选择文字、全文搜索、缩略图、目录、链接和表单。
+- 四色高亮、添加笔记，将标注导出为 Markdown。
+- 保存书签、导航历史和本地阅读统计。
+- 记录最近阅读的文件，恢复页码、缩放、主题及标签页／窗口会话。
+- 明暗界面、原始／深色／护眼页面主题，以及阅读外观调整。
+- 可选 Chrome 扩展，将本地或网页 PDF 交给阅读器打开。
+- 简体中文和英文界面。
 
-## Start locally
+PDF 解析、阅读记录与缓存都在浏览器本地处理。项目没有 PDF 上传接口、账号、云同步、统计追踪或 AI API。主动向 Gemini 分享标签页是另一项由用户控制的操作，适用 Google 服务的行为与条款。
 
-Requires Node.js 20.19+ or 22.12+ and npm.
+## 先选一种使用方式
+
+| 你的需求 | 推荐方式 | 是否需要安装 Node.js |
+| --- | --- | --- |
+| 日常使用、配合 Gemini | 下载网站包，部署为 HTTPS 网页 | 不需要 |
+| 修改源码或先在电脑上试用 | 从源码启动本地服务 | 需要 |
+| 自动打开本地／网页 PDF | 在上面任一种方式之外，再安装扩展 | 扩展本身不需要 |
+
+**阅读器网页与 Chrome 扩展是两个部分。** 只用网页就能手动打开 PDF；扩展负责接管文件，不自带阅读器网站。当前没有 Chrome 商店安装入口。
+
+### 方式一：下载即部署（推荐日常使用）
+
+1. 打开[版本下载页](https://github.com/Silhouette-my/pagenest-pdf/releases/latest)，下载 `pagenest-pdf-site-v0.1.0.zip` 并解压。
+2. 将解压后含 `index.html`、`assets/` 的文件夹上传到支持静态网站的 HTTPS 托管平台。可使用 [Netlify Drop](https://app.netlify.com/drop)：登录后拖入该文件夹，按页面提示完成部署。
+3. 打开平台提供的 `https://…` 地址，选择或拖入 PDF，即可阅读。
+
+上传的是阅读器程序，**不是你的 PDF**。部署包无需 Node.js、后端或 API 密钥。这里推荐部署在站点根路径；GitHub 仓库首页只是源码页面，不能当作阅读器网址。
+
+### 方式二：在自己的电脑上启动
+
+先安装 [Node.js LTS](https://nodejs.org/)（支持 20.19+ 或 22.12+），以及 Git，然后在终端运行：
 
 ```sh
 git clone https://github.com/Silhouette-my/pagenest-pdf.git
@@ -27,31 +47,32 @@ npm ci
 npm run dev -- --host 127.0.0.1 --port 5173
 ```
 
-Open the printed URL and choose or drop a PDF. For Gemini compatibility, use a deployed HTTPS reader page and share that tab in Gemini in Chrome; availability depends on your browser and account.
+打开终端显示的地址，通常为 `http://127.0.0.1:5173/`。保持终端运行；停止服务后网页将不可用。以后只需进入项目文件夹并运行最后一条命令。
 
-To install the optional companion, load `extension/` at `chrome://extensions` with Developer mode enabled, configure the Reader URL, and grant file-URL access if you want local PDF handoff. Automatic web PDF takeover is disabled by default. See the [extension guide](extension/README.md).
+不使用 Git 也可以：在仓库页面点击 **Code → Download ZIP**，解压，在该文件夹打开终端，然后运行最后两条命令。用于 Gemini 的兼容性验证，请使用方式一的 HTTPS 地址。
 
-## Resume reading
+### 可选：安装 Chrome 扩展
 
-**Restore previous session** and **Keep offline PDF copies (OPFS)** are enabled by default. **Recent Documents** lets you reopen or remove entries. **Clear Offline PDF Cache** removes local copies while retaining reading history.
+1. 在[版本下载页](https://github.com/Silhouette-my/pagenest-pdf/releases/latest)下载 `pagenest-pdf-extension-v0.1.0.zip` 并解压。
+2. 打开 `chrome://extensions`，开启**开发者模式**，点击**加载已解压的扩展程序**，选择解压后直接包含 `manifest.json` 的文件夹。
+3. 打开扩展的**设置**，把**阅读器网址**改为你部署的 HTTPS 地址；本地试用则填写终端实际显示的地址。点击保存。
+4. 要自动打开本地 PDF，在扩展**详细信息**中开启**允许访问文件网址**，并保持**自动打开本地 PDF**开启。
 
-Local File/Blob copies are capped at 256 MiB; extension transfers without a Blob use a 32 MiB cache cap. Recovery needs a readable original file handle or a valid cached copy. Browser storage belongs to the current origin and profile: clearing site data, changing origins or losing permissions can require selecting the file again. Physical sleep/wake and complete browser restart require manual verification.
+安装后请保留解压文件夹。**自动接管网页 PDF**默认关闭，可按需开启，也可使用扩展中的**打开当前 PDF**。完整步骤、检查方法和常见问题见[安装与部署指南](docs/install.md)。
 
-## Build and documentation
+## 阅读进度与隐私
 
-```sh
-npm run check
-```
+**恢复上次会话**和 OPFS 离线副本默认开启。通过 **Recent Documents／最近文档**重新打开或移除文件，清空离线缓存会保留阅读记录。
 
-This checks TypeScript and builds the static site into `dist/`. GitHub hosts the source; deploy `dist/` separately to an HTTPS static host.
+恢复需要可读取的原文件句柄或有效缓存。普通文件缓存上限为 256 MiB；没有 Blob 的扩展传输缓存上限为 32 MiB。清除站点数据、更换网址或 Chrome 用户配置、文件权限失效，都可能需要重新选择 PDF。换部署网址不会自动迁移已有记录。
 
-- [Reader guide](docs/reader-guide.md): controls, appearance, privacy and limitations.
-- [Development](docs/development.md): structure, extension setup, tests and deployment.
-- [Verification](docs/verification.md): current results, historical evidence and manual checks.
-- [Handoff notes](docs/handoff-notes.md): public summary of earlier macOS investigations.
+## 文档与限制
 
-## Limits and attribution
+- [安装与部署](docs/install.md)：下载、启动、安装扩展、HTTPS 部署和常见问题。
+- [开发说明](docs/development.md)：构建、项目结构与测试。
+- [阅读器详细指南（英文）](docs/reader-guide.md)：控件、主题和具体实现。
+- [验证记录（英文）](docs/verification.md)：自动化结果及待手动验收项。
 
-Scanned PDFs need an existing text layer; OCR and password-protected PDFs are not supported. Highlights and notes stay in browser storage rather than being embedded in the PDF. Dark themes preserve most raster images, so scans can remain bright. Gemini can only inspect text available in rendered pages.
+扫描件需要 PDF 自身已有文字层；目前不支持 OCR 和密码保护文件。高亮与笔记保存在浏览器中，不嵌入原 PDF。深色模式保留大部分图片颜色，因此扫描页可能仍然明亮。远处尚未渲染页面的文字层不会为 Gemini 预先加载。
 
-Rendering uses [Mozilla PDF.js](https://github.com/mozilla/pdf.js) (Apache-2.0). Reading appearance takes design inspiration from [doq](https://github.com/shivaprsd/doq); no doq source is vendored. See the [detailed acknowledgements](docs/reader-guide.md#acknowledgements--open-source-references). A license for this project's own code has not yet been selected.
+本项目独立于 Google 和 Mozilla。渲染依赖 [Mozilla PDF.js](https://github.com/mozilla/pdf.js)（Apache-2.0），阅读外观参考 [doq](https://github.com/shivaprsd/doq)，没有内置 doq 源码。详见[致谢](docs/reader-guide.md#acknowledgements--open-source-references)。项目自身代码尚未选择许可证。
