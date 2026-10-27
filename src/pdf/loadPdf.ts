@@ -11,6 +11,11 @@ import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.mjs?url";
 
 GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
 
+const cMapOptions = {
+  cMapUrl: new URL(`${import.meta.env.BASE_URL}cmaps/`, window.location.href).href,
+  cMapPacked: true,
+};
+
 export interface LoadedPdf {
   document: PDFDocumentProxy;
   destroy(): Promise<void>;
@@ -84,6 +89,7 @@ class CallbackRangeTransport extends PDFDataRangeTransport {
 export async function loadPdf(buffer: ArrayBuffer): Promise<LoadedPdf> {
   const loadingTask: PDFDocumentLoadingTask = getDocument({
     data: new Uint8Array(buffer),
+    ...cMapOptions,
     useSystemFonts: true,
   });
   try {
@@ -105,6 +111,7 @@ export async function loadPdfProgressively(
   const range = new CallbackProgressiveTransport(source);
   const loadingTask: PDFDocumentLoadingTask = getDocument({
     range,
+    ...cMapOptions,
     disableRange: true,
     disableStream: false,
     useSystemFonts: true,
@@ -129,6 +136,7 @@ export async function loadPdfWithRange(
   const range = new CallbackRangeTransport(source);
   const loadingTask: PDFDocumentLoadingTask = getDocument({
     range,
+    ...cMapOptions,
     rangeChunkSize: 64 * 1024,
     disableStream: true,
     useSystemFonts: true,
